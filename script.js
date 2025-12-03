@@ -4,15 +4,19 @@ document.getElementById('themeToggle')?.addEventListener('click', () => {
   document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
 });
 
-// Simple API fetch demo (AJAX)
-(async () => {
-  const el = document.getElementById('quote');
-  if (!el) return;
+  async function loadQuote() {
   try {
-    const res = await fetch('https://api.quotable.io/random');
-    const data = await res.json();
-    el.textContent = `"${data.content}" — ${data.author}`;
-  } catch {
-    el.textContent = 'Could not load quote.';
+    const response = await fetch("https://api.quotable.io/random");
+    const data = await response.json();
+
+    document.getElementById("quote-text").textContent = data.content;
+  } catch (error) {
+    document.getElementById("quote-text").textContent = "Error generating quote.";
   }
+}
+
+document.getElementById("quote-btn").addEventListener("click", loadQuote);
+
+// Load a quote when the page opens
+loadQuote();
 })();
